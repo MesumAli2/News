@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/font/opensans_font.xml" value="0.11851851851851852" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.12537993920972645" />
+        <entry key="app/src/main/res/layout/fragment_news.xml" value="0.2578125" />
+        <entry key="app/src/main/res/layout/newsitem.xml" value="0.21833004137225887" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

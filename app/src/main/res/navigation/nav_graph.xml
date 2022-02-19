@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/headlines">
+
+    <fragment
+        android:id="@+id/headlines"
+        android:name="com.example.news.Headlines"
+        android:label=""
+        tools:layout="@layout/fragment_headlines" >
+        <action
+            android:id="@+id/action_headlines_to_news"
+            app:destination="@id/news" />
+    </fragment>
+    <fragment
+        android:id="@+id/news"
+        android:name="com.example.news.News"
+        android:label=""
+        tools:layout="@layout/fragment_news" >
+        <argument
+            android:name="category"
+            app:argType="string" />
+        <argument
+            android:name="date"
+            app:argType="string" />
+        <argument
+            android:name="urlstring"
+            app:argType="string" />
+        <argument
+            android:name="image"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="description"
+            app:argType="string" />
+        <argument
+            android:name="author"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+</navigation>

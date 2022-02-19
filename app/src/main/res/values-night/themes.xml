@@ -1,0 +1,36 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.News" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary tool bar color. -->
+        <item name="colorPrimary">@color/white</item>
+        <!--System status bar color -->
+        <item name="colorPrimaryDark">@color/black</item>
+        <!--Displays the text for toolbar  -->
+        <item name="android:textColorPrimary">@color/black</item>
+        <!-- Theme for styling the floating button-->
+        <item name="colorSecondary">@color/black</item>
+        <!-- Theme for styling the back arrow button . -->
+        <item name="android:textColorSecondary">@color/black</item>
+        <item name="android:textColor"> @color/black</item>
+        <item name="android:actionMenuTextColor">#2E7D32</item>
+
+        <!-- Customize your theme here. -->
+        <item name="colorAccent">#2E7D32</item>
+        <!-- For Android sdk versions 26+. -->
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/opensans_font</item>
+        <!-- Target Android sdk versions < 26 and > 14. -->
+        <item name="fontFamily">@font/opensans_font</item>
+        <!-- sets the style for the overflow button -->
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryDark</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:colorControlActivated">@color/black</item>
+        <!--Theme for Date Time picker and Calendar time picker buttons  -->
+
+        <!--CheckBox border color -->
+        <item name="colorOnSurface">@color/white</item>
+        <!-- Customize your theme here. -->
+    </style>
+</resources>

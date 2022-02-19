@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:id="@+id/miItem1"
+    android:title="Business"/>
+
+    <item android:id="@+id/miitem2"
+        android:title="Health"/>
+
+
+    <item android:id="@+id/miitem3"
+        android:title="Travel"/>
+
+    <item android:id="@+id/miitem4"
+        android:title="Covid19"/>
+
+    <item android:id="@+id/miitem5"
+        android:title="Settings"/>
+
+
+</menu>
