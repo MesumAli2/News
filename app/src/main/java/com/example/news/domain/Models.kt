@@ -9,10 +9,6 @@ package com.example.news.domain
  * @see network for objects that parse or prepare network calls
  */
 
-/**
- * News represent a newsbyte that can be played.hello how rt
- *
- */
 data class NewsByte(
     val author: String?,
     val title: String,

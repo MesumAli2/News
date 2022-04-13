@@ -16,9 +16,9 @@ class NewsViewModel(application: Application): ViewModel() {
     private val newsRepository = NewsRepository(NewsDatabase.getDatabase(application))
 
     /**
-     * A playlist of videos displayed on the screen.
+     * A playlist of news displayed on the screen.
      */
-    val playlist = newsRepository.news
+    val newsList = newsRepository.news
 
     /**
      * Event triggered for network error. This is private to avoid exposing a
@@ -56,23 +56,23 @@ class NewsViewModel(application: Application): ViewModel() {
         refreshDataFromRepository()
     }
 
+    //Called by searchbar located in application toolbar
     fun serachNews(search: String) {
         viewModelScope.launch {
             try {
                 newsRepository.searchNews(search)
                 _eventNetworkError.value = false
                 _isNetworkErrorShown.value = false
-                //_news.value = ApiClient.apiService.getNews("76d0293e69c0f7e4731f2b659d98bb95","cnn,bbc" ,"en", "$searchResult","published_desc")
             } catch (e: Exception) {
-                if (playlist.value.isNullOrEmpty()){
+                if (newsList.value.isNullOrEmpty()){
                     _eventNetworkError.value = true
                 }
-                Log.d("fail", "no working man : $e back to you mesum")
+                Log.d("ViewModelScope", "Network Error $e")
 
             }
         }
     }
-
+    //Caches updated news from the network locally into the database
     fun refreshDataFromRepository() {
         viewModelScope.launch {
             try {
@@ -80,12 +80,11 @@ class NewsViewModel(application: Application): ViewModel() {
                 _eventNetworkError.value = false
                 _isNetworkErrorShown.value = false
             } catch (e: Exception) {
-                if (playlist.value.isNullOrEmpty())
+                if (newsList.value.isNullOrEmpty())
                     _eventNetworkError.value = true
             }
         }
     }
-
 
     /**
      * Factory for constructing DevByteViewModel with parameter

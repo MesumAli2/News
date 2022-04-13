@@ -6,10 +6,6 @@ import androidx.room.PrimaryKey
 import com.example.news.domain.NewsByte
 
 
-/**
- * Database entities go in this file. These are responsible for reading and writing from the
- * database.
- */
 @Entity
 data class DatabaseNews constructor(
     @PrimaryKey()
@@ -32,9 +28,7 @@ data class DatabaseNews constructor(
     val country: String,
     @ColumnInfo(name ="publishedAt")
     val publishedAt: String
-
 )
-
 /**
  * Map DatabaseVideos to domain entities
  */

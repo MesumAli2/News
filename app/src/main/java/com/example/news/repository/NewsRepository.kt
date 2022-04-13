@@ -30,7 +30,6 @@ class NewsRepository (private val database: NewsDatabase){
     suspend fun refreshNews() {
         withContext(Dispatchers.IO) {
             val newslist = NewsByteNetwork.newsBytes.getNews(
-                "76d0293e69c0f7e4731f2b659d98bb95",
                 "cnn,bbc",
                 "en",
                 "",
@@ -46,7 +45,7 @@ class NewsRepository (private val database: NewsDatabase){
     suspend fun searchNews(search: String) {
         withContext(Dispatchers.IO) {
             database.newsDao().clear()
-           val newList = NewsByteNetwork.newsBytes.getNews( "76d0293e69c0f7e4731f2b659d98bb95", "cnn,bbc", "en", search, "published_desc" )
+           val newList = NewsByteNetwork.newsBytes.getNews(  "cnn,bbc", "en", search, "published_desc" )
            database.newsDao().insertAll(newList.asDatabaseModel())
 
 

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/headlines">
+    app:startDestination="@id/loginRegisteFragment">
 
     <fragment
         android:id="@+id/headlines"
@@ -39,5 +39,14 @@
             android:name="author"
             app:argType="string"
             app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginRegisteFragment"
+        android:name="com.example.news.LoginRegisteFragment"
+        android:label="fragment_login_registe"
+        tools:layout="@layout/fragment_login_registe" >
+        <action
+            android:id="@+id/action_loginRegisteFragment_to_headlines"
+            app:destination="@id/headlines" />
     </fragment>
 </navigation>

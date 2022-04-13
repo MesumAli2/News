@@ -8,37 +8,47 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-        <androidx.appcompat.widget.Toolbar
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:id="@+id/toolbar"
-            android:layout_height="match_parent"
-            app:titleTextColor="@color/black"
-            />
+            android:layout_height="match_parent">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:defaultNavHost="true"
-            app:layout_constraintBottom_toBottomOf="parent"
+                <!--Configures the toolbar to be used inside the -->
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/appbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                                <!-- Creates the ToolBar widget used in this application-->
+                                <androidx.appcompat.widget.Toolbar
+                                    android:id="@+id/toolbar"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:minHeight="?attr/actionBarSize"
+                                    app:titleTextColor="@color/black"
+                                    android:textAlignment="textStart"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.appbar.AppBarLayout>
 
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navGraph="@navigation/nav_graph" />
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/nav_host_fragment"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="409dp"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/appbar"
+                    app:defaultNavHost="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:navGraph="@navigation/nav_graph" />
 
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:headerLayout="@layout/nav_header"
-            app:menu="@menu/nav_header_menu"
-            android:layout_gravity="start"
-            android:fitsSystemWindows="true"
 
-
-            />
+        </RelativeLayout>
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

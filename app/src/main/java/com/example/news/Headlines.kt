@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news.databinding.FragmentHeadlinesBinding
+import com.firebase.ui.auth.AuthUI
+import com.google.firebase.auth.FirebaseAuth
 
 
 class Headlines : Fragment(){
@@ -44,7 +48,7 @@ class Headlines : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.playlist.observe(viewLifecycleOwner){
+        viewModel.newsList.observe(viewLifecycleOwner){
             newslist -> newslist.let {
 
             val adapter = MainAdapter{
@@ -55,6 +59,16 @@ class Headlines : Fragment(){
 
             binding.newsRecyler.adapter = adapter
             binding.newsRecyler.layoutManager = LinearLayoutManager(this.requireContext())
+            }
+
+            binding.logout?.setOnClickListener {
+                AuthUI.getInstance()
+                    .signOut(activity as AppCompatActivity)
+                    .addOnCompleteListener {
+                        // ...
+                        Toast.makeText(activity, "Successfully logged out", Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(R.id.loginRegisteFragment)
+                    }
             }
         }
     }
