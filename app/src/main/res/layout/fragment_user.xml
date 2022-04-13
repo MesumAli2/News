@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserFragment">
+
+    <ImageView
+        android:id="@+id/userImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:scaleType="fitXY"
+        android:visibility="visible"
+        android:src="@drawable/ic_baseline_add_a_photo_24">
+
+    </ImageView>
+
+
+    <TextView
+        android:id="@+id/userName_textView"
+        android:layout_width="88dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/userImage"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="11dp"
+
+        android:fontFamily="sans-serif-light"
+        android:text="Name"
+        android:textAlignment="center"
+        android:textSize="24sp" />
+
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_below="@+id/userImage"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/userName_textView"
+        android:fontFamily="@font/poppins_medium"
+        android:text="username"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/phone_number_textview"
+        android:layout_width="88dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/username"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="9dp"
+        android:text="Phone"
+        android:textAlignment="center"
+        android:fontFamily="sans-serif-light"
+
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/phonenumber"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_below="@+id/username"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="36sp"
+
+        android:layout_marginTop="9dp"
+        android:layout_toEndOf="@+id/phone_number_textview"
+        android:fontFamily="@font/poppins_medium"
+        android:text="0501112222" />
+
+
+    <TextView
+        android:id="@+id/email_textview"
+        android:layout_width="88dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/phone_number_textview"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="9dp"
+        android:text="Email"
+        android:fontFamily="sans-serif-light"
+
+        android:textAlignment="center"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_below="@id/phonenumber"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="9dp"
+android:fontFamily="@font/poppins_medium"
+        android:layout_toEndOf="@+id/email_textview"
+        android:text="name@gmail.com"
+        android:textSize="36sp" />
+</RelativeLayout>

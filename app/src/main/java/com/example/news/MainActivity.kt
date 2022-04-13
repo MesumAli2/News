@@ -20,7 +20,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
+class MainActivity : AppCompatActivity(){
 
     private lateinit var navController: NavController
 
@@ -42,7 +42,10 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
         navController = navHostFragment.navController
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        //val appBarConfiguration = AppBarConfiguration(navController.graph)
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.headlines)
+        )
 
         findViewById<Toolbar>(R.id.toolbar)
             .setupWithNavController(navController, appBarConfiguration)
@@ -130,55 +133,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        val search = menu?.findItem(R.id.menu_search)
-        val searchView = search?.actionView as? SearchView
-        searchView?.setOnQueryTextListener(this)
 
-        return true
-
-    }
-
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        //viewModel.searchResult = query.toString()
-        //calls the api
-        viewModel.serachNews(query.toString())
-        Toast.makeText(applicationContext, "${query.toString()}", Toast.LENGTH_SHORT).show()
-        //Receives the result
-        return true
-    }
-
-
-
-    override fun onQueryTextChange(newText: String?): Boolean {
-
-
-        if (newText.isNullOrEmpty()){
-
-            viewModel.refreshDataFromRepository()
-                viewModel.newsList.observe(this){
-                    clearlist -> clearlist.let {
-                       val adapter = MainAdapter{
-
-                      }
-                    adapter.submitList(it)
-                } }
-
-            /*
-            viewModel.news.observe(this){
-                list -> list.let {
-                val adapter = MainAdapter()
-                adapter.submitList(it.newsList)
-                recyclerview.adapter = adapter
-                recyclerview.layoutManager = LinearLayoutManager(this)
-
-            }
-            }*/
-
-        }
-
-        return true
-    }
 
 }

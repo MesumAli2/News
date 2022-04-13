@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_headlines_to_news"
             app:destination="@id/news" />
+        <action
+            android:id="@+id/action_headlines_to_userFragment"
+            app:destination="@id/userFragment" />
     </fragment>
     <fragment
         android:id="@+id/news"
@@ -49,4 +52,9 @@
             android:id="@+id/action_loginRegisteFragment_to_headlines"
             app:destination="@id/headlines" />
     </fragment>
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.example.news.UserFragment"
+        android:label="fragment_user"
+        tools:layout="@layout/fragment_user" />
 </navigation>

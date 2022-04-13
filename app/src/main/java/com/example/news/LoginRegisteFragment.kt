@@ -1,7 +1,6 @@
 package com.example.news
 
 import android.app.Activity.RESULT_OK
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,24 +15,15 @@ import com.example.news.domain.User
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.SignInButton
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.Response
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import javax.security.auth.callback.Callback
 
 
 class LoginRegisteFragment : Fragment() {
@@ -86,42 +76,76 @@ class LoginRegisteFragment : Fragment() {
 
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
         if (result.resultCode == RESULT_OK) {
-            //Firebase firestore setup
-            val rootRef: FirebaseFirestore = FirebaseFirestore.getInstance()
-            val productRef: CollectionReference = rootRef.collection("users")
-            productRef.get().addOnCompleteListener {
-                val response = com.example.news.domain.Response()
-
-                if (it.isSuccessful) {
-                    val result = it.result
-                    result.let {
-                      //Converts each response into user object
-                      response.users = result.documents.mapNotNull {
-                          it.toObject(User::class.java)
-                      }
-                    }
-                }
-                var userExists : Boolean = false
-                for (i  in response.users!!){
-                    //if users is found in db then set userExists to true
-                    if (i.uid == (mAuth.currentUser?.uid)){
-                        userExists = true
-                        Toast.makeText(activity, "Welcome Back ${mAuth.currentUser?.displayName}", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                //if user not exists then save new user
-                if (!userExists){
-                    Toast.makeText(activity, "New user saved", Toast.LENGTH_SHORT).show()
-                    saveNewUser()
-                }
-            }
-
-                val action = LoginRegisteFragmentDirections.actionLoginRegisteFragmentToHeadlines()
-                findNavController().navigate(action)
-
+            //findUserUniqueProperties()
+                findUser()
                 // ...
             }
         }
+
+    private fun findUserUniqueProperties() {
+
+        val rootRef: FirebaseFirestore = FirebaseFirestore.getInstance()
+        val productRef: CollectionReference = rootRef.collection("users")
+
+        productRef.get().addOnCompleteListener {
+            val response = com.example.news.domain.Response()
+
+            if (it.isSuccessful) {
+                val result = it.result
+
+                result.let {
+                    //Converts each response into user object
+                    response.users = result.documents.mapNotNull {
+                        it.toObject(User::class.java)
+                    }
+                }
+            }
+            var userExists : Boolean = false
+            for (i  in response.users!!){
+                //if users is found in db then set userExists to true
+                if (i.uid == (mAuth.currentUser?.uid)){
+                    userExists = true
+                    Toast.makeText(activity, "Welcome Back ${mAuth.currentUser?.displayName}", Toast.LENGTH_SHORT).show()
+                }
+            }
+            //if user not exists then save new user
+            if (!userExists){
+                Toast.makeText(activity, "New user saved", Toast.LENGTH_SHORT).show()
+                saveNewUser()
+            }
+        }
+    }
+
+
+    private fun findUser(){
+        val rootRef: FirebaseFirestore = FirebaseFirestore.getInstance()
+        val docIdRef: DocumentReference = rootRef.collection("users").document(mAuth.currentUser!!.uid)
+        docIdRef.get().addOnCompleteListener  (object :  OnCompleteListener<DocumentSnapshot>{
+            override fun onComplete(p0: Task<DocumentSnapshot>) {
+                if (p0.isSuccessful){
+                    val  document = p0.getResult()
+                    if (document.exists()) {
+                        Toast.makeText(activity, "Welcome Back ${mAuth.currentUser!!.displayName}", Toast.LENGTH_SHORT).show()
+                        val action = LoginRegisteFragmentDirections.actionLoginRegisteFragmentToHeadlines()
+                        findNavController().navigate(action)
+                        Log.d("loginfragment", "Document exists!");
+                    } else {
+                        saveNewUser()
+                        val action = LoginRegisteFragmentDirections.actionLoginRegisteFragmentToHeadlines()
+                        findNavController().navigate(action)
+                        Log.d("loginfragment", "Document does not exist!");
+
+                    }
+                }else {
+                    Log.d("loginfragment", "Failed with: ", p0.getException());
+                    Toast.makeText(activity, "Login Unsuccessful try again ", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
+
+
+        
 
 
     private fun saveNewUser() {

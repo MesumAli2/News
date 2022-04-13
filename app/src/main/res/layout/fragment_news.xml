@@ -6,31 +6,57 @@
     android:layout_height="match_parent"
     tools:context=".News">
 
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="167dp"
+        android:layout_margin="8dp"
+        android:layout_marginBottom="10dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/bbc_logo"
+        app:layout_constraintBottom_toTopOf="@+id/category"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/category"
-        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
-        android:layout_width="186dp"
-        android:layout_height="36dp"
-        android:layout_marginEnd="104dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
         android:text="@string/category"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toTopOf="@+id/textview7"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/date"
-        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
-        android:layout_width="203dp"
-        android:layout_height="66dp"
-        android:layout_marginStart="233dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="36dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="sans-serif"
+        android:layout_marginStart="8dp"
         android:text="Date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/articledescription" />
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/time"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="sans-serif"
+        android:text="time"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/published_textview"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <WebView
         android:id="@+id/webView"
@@ -42,74 +68,46 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <TextView
         android:id="@+id/articledescription"
         style="@style/TextAppearance.AppCompat"
-        android:layout_width="359dp"
-        android:layout_height="112dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:fontFamily="@font/artifika"
         android:maxLines="20"
         android:scrollbars="vertical"
         android:text="TextView"
-        android:textSize="14sp"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview7" />
-
-    <TextView
-        android:id="@+id/textview7"
-        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
-        android:layout_width="229dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginEnd="86dp"
-        android:layout_marginBottom="4dp"
-        android:text="Article"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/articledescription"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="167dp"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="47dp"
-        android:layout_marginBottom="10dp"
-        android:src="@drawable/bbc_logo"
-        app:layout_constraintBottom_toTopOf="@+id/category"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/date" />
 
     <TextView
         android:id="@+id/author"
         style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
-        android:layout_width="155dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="30dp"
-        android:text="Not Available"
+        android:layout_width="131dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/poppins_medium"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/articledescription" />
 
     <Button
         android:id="@+id/showarticle"
-        android:layout_width="211dp"
-        android:layout_height="39dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="96dp"
         android:layout_marginEnd="104dp"
-        android:text="View Full Article"
+        android:fontFamily="sans-serif"
+        android:text="Full Article"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.554"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/author" />
+        app:layout_constraintTop_toBottomOf="@+id/articledescription" />
 
     <Button
         android:id="@+id/hidearticle"
@@ -124,5 +122,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.992" />
+
+    <TextView
+        android:id="@+id/published_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="sans-serif-light"
+        android:gravity="bottom"
+        android:text="Published"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

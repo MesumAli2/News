@@ -1,16 +1,23 @@
 package com.example.news
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.webkit.WebViewClient
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.news.databinding.FragmentNewsBinding
 import kotlinx.android.synthetic.main.fragment_news.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 //Displayed news detail for users selected news item from the list
@@ -30,8 +37,13 @@ class News : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val keyboard = (activity as AppCompatActivity).getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        keyboard.hideSoftInputFromWindow(view.windowToken, 0)
+        (activity as AppCompatActivity).supportActionBar?.title = "Article"
         showNewsDetail()
         viewFullArticle()
         hideArticleFromView()
@@ -45,12 +57,28 @@ class News : Fragment() {
             category.text = getString(R.string.category, navigationArg.category)
             articledescription.text = navigationArg.description.toString()
             author.text = navigationArg.author
-            date.text = getString(R.string.date, navigationArg.date)
+            Log.d("newsfragment", navigationArg.date.toString())
+           // date.text = getString(R.string.date, navigationArg.date)
             imageView.load(navigationArg.image) {
                 placeholder(R.drawable.loading_animation)
                 error(R.drawable.ic_baseline_image_not_supported_24)
             }
         }
+        formatDate()
+    }
+
+    private fun formatDate(){
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss+ss:ss")
+        val outputFormat = SimpleDateFormat("dd-MM-yyyy")
+        val outputTimeFormat = SimpleDateFormat("HH:mm")
+        val date: Date = inputFormat.parse(navigationArg.date)
+        val formattedDate: String = outputFormat.format(date)
+        val formatedTime : String = outputTimeFormat.format(date)
+        println(formattedDate) // prints 10-04-2018
+        binding.date.text = formattedDate.toString()
+        binding.time.text = formatedTime
+
+
     }
 
     private fun hideArticleFromView() {
@@ -62,8 +90,9 @@ class News : Fragment() {
             imageView.visibility = View.VISIBLE
             showarticle.visibility =View.VISIBLE
             hidearticle.visibility = View.GONE
-            textview7.visibility = View.VISIBLE
             webView.visibility = View.GONE
+            hidearticle.text = "Show"
+            hidearticle.setTextColor(Color.BLACK)
         }
     }
 
@@ -78,7 +107,6 @@ class News : Fragment() {
                 date.visibility = View.GONE
                 imageView.visibility = View.GONE
                 showarticle.visibility = View.GONE
-                textview7.visibility = View.GONE
             }
         }
     }

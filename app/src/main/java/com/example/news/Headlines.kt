@@ -1,11 +1,13 @@
 package com.example.news
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -21,13 +23,7 @@ class Headlines : Fragment(){
     
     private var _binding: FragmentHeadlinesBinding? = null
     private val binding get() = _binding!!
-    private lateinit var navController: NavController
 
-    /**
-     * One way to delay creation of the viewModel until an appropriate lifecycle method is to use
-     * lazy. This requires that viewModel not be referenced before onActivityCreated, which we
-     * do in this Fragment.
-     */
     private val viewModel: NewsViewModel by lazy {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
@@ -42,6 +38,10 @@ class Headlines : Fragment(){
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentHeadlinesBinding.inflate(inflater, container, false)
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+        (activity as AppCompatActivity).supportActionBar?.title ="News"
+        setHasOptionsMenu(true)
+
         return binding.root
     }
 
@@ -56,21 +56,75 @@ class Headlines : Fragment(){
                 findNavController().navigate(action)
             }
             adapter.submitList(it)
-
             binding.newsRecyler.adapter = adapter
             binding.newsRecyler.layoutManager = LinearLayoutManager(this.requireContext())
             }
 
-            binding.logout?.setOnClickListener {
-                AuthUI.getInstance()
-                    .signOut(activity as AppCompatActivity)
-                    .addOnCompleteListener {
-                        // ...
-                        Toast.makeText(activity, "Successfully logged out", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.loginRegisteFragment)
-                    }
-            }
+
         }
     }
+
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_menu, menu)
+        inflater.inflate(R.menu.nav_header_menu, menu)
+        inflater.inflate(R.menu.person_menu, menu)
+        createSearchView(menu)
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.lgtbtn ->{
+                logout()
+            }
+            R.id.person_menu_icon ->{
+                val action = HeadlinesDirections.actionHeadlinesToUserFragment()
+                findNavController().navigate(action)
+            }
+
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun logout() {
+        AuthUI.getInstance()
+            .signOut(activity as AppCompatActivity)
+            .addOnCompleteListener {
+                Toast.makeText(activity, "Successfully logged out", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.loginRegisteFragment)
+            }
+    }
+
+    private fun createSearchView(menu: Menu) {
+        val searchMeuItem = menu.findItem(R.id.menu_search)
+        val searchView = searchMeuItem?.actionView as? SearchView
+        val keyboard = (activity as AppCompatActivity).getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        searchView?.setOnQueryTextListener(object  : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel.serachNews(query.toString())
+                Toast.makeText(activity, "${query.toString()}", Toast.LENGTH_SHORT).show()
+                keyboard.hideSoftInputFromWindow(view?.windowToken, 0)
+                return true
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()){
+                    viewModel.refreshDataFromRepository()
+                    viewModel.newsList.observe(viewLifecycleOwner){
+                        val adapter = MainAdapter{}
+                        adapter.submitList(it)
+                    }
+                    keyboard.hideSoftInputFromWindow(view?.windowToken, 0)
+                }
+                return true
+            }
+
+        } )
+    }
+
+
+
 
 }
