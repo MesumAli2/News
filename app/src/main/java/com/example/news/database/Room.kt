@@ -8,13 +8,13 @@ import androidx.room.*
 @Dao
 interface NewsDao{
     @Query("select * from DatabaseNews")
-    fun getVideos(): LiveData<List<DatabaseNews>>
+    fun getNews(): LiveData<List<DatabaseNews>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(news: List<DatabaseNews>)
 
     @Query("DELETE FROM DatabaseNews")
-    fun clear()
+   suspend fun clear()
 
 }
 

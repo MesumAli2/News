@@ -4,10 +4,14 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.news.database.NewsDatabase
+import com.example.news.network.NetworkNews
+import com.example.news.network.NetworkNewsContainer
+import com.example.news.network.asDatabaseModel
 import com.example.news.repository.NewsRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class NewsViewModel(application: Application): ViewModel() {
+class NewsViewModel(val application: Application): ViewModel() {
 
 
     /**
@@ -19,6 +23,9 @@ class NewsViewModel(application: Application): ViewModel() {
      * A playlist of news displayed on the screen.
      */
     val newsList = newsRepository.news
+
+
+    val newsNetworkDataRepo = newsRepository.newsList
 
     /**
      * Event triggered for network error. This is private to avoid exposing a
@@ -73,7 +80,7 @@ class NewsViewModel(application: Application): ViewModel() {
         }
     }
     //Caches updated news from the network locally into the database
-    fun refreshDataFromRepository() {
+  /*  fun refreshDataFromRepository() {
         viewModelScope.launch {
             try {
                 newsRepository.refreshNews()
@@ -82,9 +89,22 @@ class NewsViewModel(application: Application): ViewModel() {
             } catch (e: Exception) {
                 if (newsList.value.isNullOrEmpty())
                     _eventNetworkError.value = true
+                Log.d("viewmodelError", e.message.toString())
             }
         }
+
     }
+*/
+    fun refreshDataFromRepository(){
+        newsRepository.refreshNews()
+    }
+    fun insertAllNews(netNewsList: NetworkNewsContainer){
+        viewModelScope.launch(Dispatchers.IO) {
+            NewsDatabase.getDatabase(application).newsDao().insertAll(netNewsList.asDatabaseModel())
+        }
+
+    }
+
 
     /**
      * Factory for constructing DevByteViewModel with parameter

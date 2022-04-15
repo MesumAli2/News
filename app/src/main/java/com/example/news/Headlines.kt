@@ -1,6 +1,5 @@
 package com.example.news
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.view.*
@@ -10,12 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news.databinding.FragmentHeadlinesBinding
 import com.firebase.ui.auth.AuthUI
-import com.google.firebase.auth.FirebaseAuth
 
 
 class Headlines : Fragment(){
@@ -48,6 +45,10 @@ class Headlines : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.newsNetworkDataRepo.observe(viewLifecycleOwner){
+            viewModel.insertAllNews(it)
+
+        }
         viewModel.newsList.observe(viewLifecycleOwner){
             newslist -> newslist.let {
 

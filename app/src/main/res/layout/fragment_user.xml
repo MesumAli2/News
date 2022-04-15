@@ -12,8 +12,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:scaleType="fitXY"
-        android:visibility="visible"
-        android:src="@drawable/ic_baseline_add_a_photo_24">
+
+        android:src="@drawable/ic_baseline_add_a_photo_24"
+        android:visibility="visible">
 
     </ImageView>
 
