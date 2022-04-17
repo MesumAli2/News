@@ -35,6 +35,8 @@ class UserFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         mAuth = FirebaseAuth.getInstance()
         (activity as AppCompatActivity).supportActionBar?.title = " ${mAuth.currentUser?.displayName} Profile"
+        (activity as AppCompatActivity).supportActionBar?.setLogo(R.drawable.ic_baseline_person_24)
+        (activity as AppCompatActivity).supportActionBar?.subtitle =""
         binding.userImage.load(mAuth.currentUser?.photoUrl){
             placeholder(R.drawable.ic_baseline_person_24)
             error(R.drawable.ic_baseline_broken_image_24)

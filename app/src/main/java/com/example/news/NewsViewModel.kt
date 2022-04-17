@@ -3,12 +3,15 @@ package com.example.news
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import androidx.paging.PagingData
+import com.example.news.database.DatabaseNews
 import com.example.news.database.NewsDatabase
 import com.example.news.network.NetworkNews
 import com.example.news.network.NetworkNewsContainer
 import com.example.news.network.asDatabaseModel
 import com.example.news.repository.NewsRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class NewsViewModel(val application: Application): ViewModel() {
@@ -49,6 +52,7 @@ class NewsViewModel(val application: Application): ViewModel() {
 
 
     var searchResult: String = ""
+    var item = newsRepository.items
 
 
     /**
@@ -59,9 +63,9 @@ class NewsViewModel(val application: Application): ViewModel() {
         get() = _isNetworkErrorShown
 
 
-    init {
+  /*  init {
         refreshDataFromRepository()
-    }
+    }*/
 
     //Called by searchbar located in application toolbar
     fun serachNews(search: String) {
@@ -103,7 +107,17 @@ class NewsViewModel(val application: Application): ViewModel() {
             NewsDatabase.getDatabase(application).newsDao().insertAll(netNewsList.asDatabaseModel())
         }
 
+
+
+
     }
+
+    fun getnewsdatasource(search: String) : Flow<PagingData<DatabaseNews>> {
+      return  newsRepository.getSearchResultStream(search)
+
+    }
+
+
 
 
     /**

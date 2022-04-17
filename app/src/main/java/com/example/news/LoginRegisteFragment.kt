@@ -24,6 +24,9 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 
 
 class LoginRegisteFragment : Fragment() {
@@ -67,8 +70,13 @@ class LoginRegisteFragment : Fragment() {
     // Create and launch sign-in intent
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
+            .setLogo(R.drawable.meganews)
+            .setTheme(R.style.LoginTheme)
+            .setLockOrientation(true)
             .setAvailableProviders(providers)
             .build()
+
+
 
         signInLauncher.launch(signInIntent)
 

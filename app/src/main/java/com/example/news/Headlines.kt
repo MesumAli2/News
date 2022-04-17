@@ -9,21 +9,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news.databinding.FragmentHeadlinesBinding
 import com.firebase.ui.auth.AuthUI
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 
 class Headlines : Fragment(){
- 
-    
+
     private var _binding: FragmentHeadlinesBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel: NewsViewModel by lazy {
         val activity = requireNotNull(this.activity) {
-            "You can only access the viewModel after onActivityCreated()"
         }
         ViewModelProvider(this, NewsViewModel.Factory(activity.application))
             .get(NewsViewModel::class.java)
@@ -36,7 +36,10 @@ class Headlines : Fragment(){
         // Inflate the layout for this fragment
         _binding = FragmentHeadlinesBinding.inflate(inflater, container, false)
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
-        (activity as AppCompatActivity).supportActionBar?.title ="News"
+        (activity as AppCompatActivity).supportActionBar?.setLogo(R.drawable.news)
+        (activity as AppCompatActivity).supportActionBar?.title = " Mega news"
+        (activity as AppCompatActivity).supportActionBar?.subtitle = "  Trusted worldwide "
+
         setHasOptionsMenu(true)
 
         return binding.root
@@ -45,34 +48,43 @@ class Headlines : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //Save the news data from network to database
         viewModel.newsNetworkDataRepo.observe(viewLifecycleOwner){
             viewModel.insertAllNews(it)
-
+            }
+        val adapter = MainAdapter {
+            val action = HeadlinesDirections.actionHeadlinesToNews(
+                it.category.toString(),
+                it.publishedAt.toString(),
+                it.url.toString(),
+                it.images,
+                it.description.toString(),
+                it.author,
+                it.source
+            )
+            findNavController().navigate(action)
         }
-        viewModel.newsList.observe(viewLifecycleOwner){
-            newslist -> newslist.let {
+        binding.newsRecyler.adapter = adapter
+        binding.newsRecyler.layoutManager = LinearLayoutManager(this@Headlines.context)
+        //Load the news from the database
+        lifecycleScope.launch {
+            viewModel.getnewsdatasource("").collect {
+                adapter.submitData(it)
 
-            val adapter = MainAdapter{
-                val action = HeadlinesDirections.actionHeadlinesToNews(it.category.toString(),  it.publishedAt.toString(),  it.url.toString(), it.image, it.description.toString(), it.author)
-                findNavController().navigate(action)
-            }
-            adapter.submitList(it)
-            binding.newsRecyler.adapter = adapter
-            binding.newsRecyler.layoutManager = LinearLayoutManager(this.requireContext())
-            }
+                /* viewModel.item.collect {
+                adapter.submitData(it)
+            }*/
 
+
+            }
 
         }
     }
-
-
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)
         inflater.inflate(R.menu.nav_header_menu, menu)
         inflater.inflate(R.menu.person_menu, menu)
         createSearchView(menu)
-
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -104,8 +116,30 @@ class Headlines : Fragment(){
         val searchView = searchMeuItem?.actionView as? SearchView
         val keyboard = (activity as AppCompatActivity).getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         searchView?.setOnQueryTextListener(object  : SearchView.OnQueryTextListener{
+
+            val adapter = MainAdapter {
+                val action = HeadlinesDirections.actionHeadlinesToNews(
+                    it.category.toString(),
+                    it.publishedAt.toString(),
+                    it.url.toString(),
+                    it.images,
+                    it.description.toString(),
+                    it.author,
+                    it.source
+                )
+                findNavController().navigate(action)
+            }
             override fun onQueryTextSubmit(query: String?): Boolean {
+
                 viewModel.serachNews(query.toString())
+                binding.newsRecyler.adapter = adapter
+                binding.newsRecyler.layoutManager = LinearLayoutManager(this@Headlines.context)
+                lifecycleScope.launch {
+                    viewModel.getnewsdatasource(search = query!!).collect {
+                        adapter.submitData(it)
+                    }
+                }
+
                 Toast.makeText(activity, "${query.toString()}", Toast.LENGTH_SHORT).show()
                 keyboard.hideSoftInputFromWindow(view?.windowToken, 0)
                 return true
@@ -113,10 +147,13 @@ class Headlines : Fragment(){
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText.isNullOrEmpty()){
                     viewModel.refreshDataFromRepository()
-                    viewModel.newsList.observe(viewLifecycleOwner){
-                        val adapter = MainAdapter{}
-                        adapter.submitList(it)
-                    }
+                        //  viewModel.getnewsdatasource(newText).observe(viewLifecycleOwner){
+                        //  val adapter = MainAdapter{}
+                      //  adapter.submitData(it)
+                  //  }
+                    adapter.refresh()
+
+
                     keyboard.hideSoftInputFromWindow(view?.windowToken, 0)
                 }
                 return true

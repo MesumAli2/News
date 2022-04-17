@@ -52,9 +52,9 @@
         android:layout_below="@id/username"
         android:layout_marginStart="8dp"
         android:layout_marginTop="9dp"
+        android:fontFamily="sans-serif-light"
         android:text="Phone"
         android:textAlignment="center"
-        android:fontFamily="sans-serif-light"
 
         android:textSize="24sp" />
 

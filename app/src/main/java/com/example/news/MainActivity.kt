@@ -47,14 +47,17 @@ class MainActivity : AppCompatActivity(){
             setOf(R.id.headlines)
         )
 
+       findViewById<Toolbar>(R.id.toolbar)
+          .setupWithNavController(navController, appBarConfiguration)
+
         findViewById<Toolbar>(R.id.toolbar)
-            .setupWithNavController(navController, appBarConfiguration)
+            .setTitleTextAppearance(this, R.style.toolBarTextFont)
 
-     /*   val navHostFragment =   supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
+        /*   val navHostFragment =   supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+           navController = navHostFragment.navController
 
-        NavigationUI.setupActionBarWithNavController(this, navController)
-*/
+           NavigationUI.setupActionBarWithNavController(this, navController)
+   */
 
        /* navView.setNavigationItemSelectedListener() {
            when(it.itemId){

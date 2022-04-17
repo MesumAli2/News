@@ -63,6 +63,12 @@ class News : Fragment() {
                 placeholder(R.drawable.loading_animation)
                 error(R.drawable.ic_baseline_image_not_supported_24)
             }
+            if (navigationArg.image.isNullOrEmpty() && navigationArg.source.contains("bbc", ignoreCase = true) ){
+                imageView.setImageResource(R.drawable.bbc)
+            }
+            if ( navigationArg.image.isNullOrEmpty() && navigationArg.source.contains("bloomberg", ignoreCase = true)){
+                imageView.setImageResource(R.drawable.bloombergicon)
+            }
         }
         formatDate()
     }
@@ -91,7 +97,6 @@ class News : Fragment() {
             showarticle.visibility =View.VISIBLE
             hidearticle.visibility = View.GONE
             webView.visibility = View.GONE
-            hidearticle.text = "Show"
             hidearticle.setTextColor(Color.BLACK)
         }
     }

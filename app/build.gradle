@@ -43,6 +43,7 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.3'
     implementation 'com.google.firebase:firebase-firestore-ktx:24.1.0'
+    implementation 'com.google.firebase:firebase-config-ktx:21.0.2'
     def moshi_version ="1.9.3"
     def retrofit_version = "2.9.0"
     //retrofit
@@ -76,6 +77,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "androidx.room:room-compiler:2.4.2"
     implementation "androidx.room:room-ktx:2.4.2"
+    implementation "androidx.room:room-paging:2.4.2"
     testImplementation 'junit:junit:'
 
 
@@ -91,5 +93,8 @@ dependencies {
     // Also declare the dependency for the Google Play services library and specify its version
     implementation 'com.google.android.gms:play-services-auth:20.1.0'
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+
+    implementation "androidx.paging:paging-runtime-ktx:3.1.1"
+
 
 }

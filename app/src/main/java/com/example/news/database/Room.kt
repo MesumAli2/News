@@ -2,6 +2,8 @@ package com.example.news.database
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
+import androidx.paging.PagingSource
 import androidx.room.*
 
 //RoomDB quires used to perform action on the cached data
@@ -15,6 +17,9 @@ interface NewsDao{
 
     @Query("DELETE FROM DatabaseNews")
    suspend fun clear()
+
+   @Query("SELECT * FROM DATABASENEWS")
+   fun getNewsPaging(): PagingSource <Int, DatabaseNews>
 
 }
 
@@ -33,7 +38,7 @@ interface NewsDao{
                 val instance = Room.databaseBuilder(
                 context.applicationContext,
                 NewsDatabase::class.java,
-                "ssssss"
+                "NewsList"
                 ).build()
                 INSTANCE = instance
                 return instance

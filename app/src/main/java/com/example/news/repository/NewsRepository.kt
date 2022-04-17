@@ -6,16 +6,23 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.switchMap
+import androidx.paging.*
+import com.example.news.database.DatabaseNews
 import com.example.news.database.NewsDatabase
 import com.example.news.database.asDomainModel
 import com.example.news.domain.NewsByte
+import com.example.news.domain.NewsModel
 import com.example.news.network.NetworkNewsContainer
 import com.example.news.network.NewsByteNetwork
 import com.example.news.network.NewsByteNetworkJava
 import com.example.news.network.asDatabaseModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import retrofit2.Response
+import java.io.IOException
 import javax.security.auth.callback.Callback
 
 
@@ -56,12 +63,11 @@ class NewsRepository (private val database: NewsDatabase){
 
             val newsRp = NewsByteNetworkJava.CreateService(NewsByteNetworkJava.TaskService::class.java)
             val call = newsRp.getNews(
-                "60edb176f7611beaa6f74c76472203cd",
                 "cnn,bbc,telegraf,nytimes,bloomberg,Yahoo News, independent,Post, Engadget, ABC",
-
                 "en",
                 "",
                 "published_desc"
+
 
             )
                 call.enqueue(object : retrofit2.Callback<NetworkNewsContainer> {
@@ -90,11 +96,11 @@ class NewsRepository (private val database: NewsDatabase){
             val newsReponse =
                 NewsByteNetworkJava.CreateService(NewsByteNetworkJava.TaskService::class.java)
             val call = newsReponse.getNews(
-                "60edb176f7611beaa6f74c76472203cd",
                 "cnn,bbc,telegraf,nytimes,bloomberg,Yahoo News,Mail, independent,Post, Engadget, ABC, dailymail",
                 "en",
                 search,
                 "published_desc"
+
             )
             call.enqueue(object : retrofit2.Callback<NetworkNewsContainer> {
                 override fun onResponse(
@@ -113,4 +119,85 @@ class NewsRepository (private val database: NewsDatabase){
     }
 
 
+    /**
+     * Search repositories whose names match the query, exposed as a stream of data that will emit
+     * every time we get more data from the network.
+     */
+    fun getSearchResultStream(search: String): Flow<PagingData<DatabaseNews>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = NETWORK_PAGE_SIZE,
+                enablePlaceholders = false,
+                maxSize = 1000
+            ), pagingSourceFactory ={ MyPagingSource(search)}
+        ).flow
+    }
+
+    val items = Pager(
+        PagingConfig(
+            pageSize = 25,
+            enablePlaceholders = true,
+            maxSize = 1000
+        )
+    ){
+        database.newsDao().getNewsPaging()
+    }.flow
+
+
+    companion object {
+        const val NETWORK_PAGE_SIZE = 25
+    }
+
+
+
+
+private  val GITHUB_STARTING_PAGE_INDEX = 1
+
+class MyPagingSource (
+        val search: String
+        ) : PagingSource<Int, DatabaseNews>() {
+
+    private val currentnews = MutableLiveData<List<DatabaseNews>>()
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DatabaseNews> {
+        val position = params.key ?: 1
+
+        return try {
+
+            val result = NewsByteNetwork.newsBytes.getNews(
+                "cnn,bbc",
+                "en",
+                search,
+                "published_desc"
+            )
+
+
+
+            LoadResult.Page(
+                data = result.asDatabaseModel(),
+                prevKey = if (position == 1) null else position -1,
+                nextKey =   if (result.news.isEmpty()) null else position + 1
+
+            )
+        } catch (e: IOException) {
+            LoadResult.Error(e)
+        } catch (e: HttpException) {
+            LoadResult.Error(e)
+        }
+
+
+    }
+
+
+
+    override fun getRefreshKey(state: PagingState<Int, DatabaseNews>): Int? {
+        return state .anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+
+        }    }
+
+    companion object {
+        const val NETWORK_PAGE_SIZE = 25
+    }
+}
 }

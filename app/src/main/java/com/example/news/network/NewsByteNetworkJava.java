@@ -1,6 +1,8 @@
 package com.example.news.network;
 
 
+import com.example.news.domain.Data;
+import com.example.news.domain.NewsModel;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory;
 
@@ -46,6 +48,7 @@ public class NewsByteNetworkJava {
    public static Moshi moshi =  new Moshi.Builder().add( new KotlinJsonAdapterFactory())
             .build();
     public static Retrofit.Builder builder = new Retrofit.Builder()
+            .client(okHttpClient)
             .baseUrl(BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi));
 
@@ -54,8 +57,8 @@ public class NewsByteNetworkJava {
 
    public interface TaskService {
        @GET("news")
-       Call<NetworkNewsContainer> getNews(@Query("access_key") String accessKey,   @Query("sources") String sources, @Query("languages") String language,
-                                          @Query("keywords") String search, @Query("sort") String sort);
+       Call<NetworkNewsContainer> getNews(@Query("sources") String sources, @Query("languages") String language,
+                               @Query("keywords") String search, @Query("sort") String sort);
    }
 
       public static <S> S CreateService(Class<S> serviceClass){
