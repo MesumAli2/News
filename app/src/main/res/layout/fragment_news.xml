@@ -26,11 +26,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
         android:fontFamily="sans-serif"
+        android:layout_marginHorizontal="16dp"
+
         android:gravity="center"
         android:text="@string/category"
-        android:textSize="16sp"
+        android:textSize="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
@@ -38,25 +39,23 @@
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:fontFamily="sans-serif"
-        android:layout_marginStart="8dp"
         android:text="Date"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/time"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        android:textSize="11dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time" />
 
     <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="12dp"
         android:fontFamily="sans-serif"
         android:text="time"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/published_textview"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        android:layout_marginStart="16dp"
+        android:textSize="11dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/published_textview" />
 
     <WebView
         android:id="@+id/webView"
@@ -74,12 +73,13 @@
         style="@style/TextAppearance.AppCompat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:fontFamily="@font/artifika"
+        android:fontFamily="@font/roboto"
+        android:layout_marginTop="12dp"
         android:maxLines="20"
+        android:layout_marginHorizontal="16dp"
         android:scrollbars="vertical"
         android:text="TextView"
-        android:textSize="22sp"
+        android:textSize="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -102,8 +102,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="96dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="104dp"
-        android:fontFamily="sans-serif"
+        android:fontFamily="@font/roboto"
         android:text="Full Article"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.554"
@@ -117,6 +118,8 @@
         android:layout_height="37dp"
         android:text="Hide Article"
         android:textColor="#121111"
+        android:textSize="12dp"
+
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

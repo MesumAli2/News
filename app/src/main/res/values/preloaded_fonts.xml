@@ -4,5 +4,6 @@
         <item>@font/artifika</item>
         <item>@font/poppins_light</item>
         <item>@font/poppins_medium</item>
+        <item>@font/roboto</item>
     </array>
 </resources>

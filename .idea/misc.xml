@@ -4,6 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/ic_baseline_add_a_photo_24.xml" value="0.2035" />
+        <entry key="app/src/main/res/drawable/ic_baseline_newspaper_24.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1305" />
+        <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1305" />
         <entry key="app/src/main/res/font/opensans_font.xml" value="0.11851851851851852" />
         <entry key="app/src/main/res/layout-land/fragment_headlines.xml" value="0.2821869488536155" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.32523345947265625" />
@@ -11,9 +14,9 @@
         <entry key="app/src/main/res/layout/fragment_login_registe.xml" value="0.17300724637681159" />
         <entry key="app/src/main/res/layout/fragment_news.xml" value="0.260699462890625" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.3333333333333333" />
-        <entry key="app/src/main/res/layout/fragment_user.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/nav_header.xml" value="0.20729166666666668" />
-        <entry key="app/src/main/res/layout/newsitem.xml" value="0.21833004137225887" />
+        <entry key="app/src/main/res/layout/fragment_user.xml" value="0.2582122802734375" />
+        <entry key="app/src/main/res/layout/nav_header.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/newsitem.xml" value="0.3372829832667901" />
         <entry key="app/src/main/res/menu/main_menu.xml" value="0.29846153846153844" />
         <entry key="app/src/main/res/menu/nav_header_menu.xml" value="0.29846153846153844" />
         <entry key="app/src/main/res/menu/person_menu.xml" value="0.30277777777777776" />

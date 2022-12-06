@@ -1,6 +1,7 @@
 package com.example.news
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -25,33 +26,33 @@ class MainAdapter(private val OnitemClciked: (DatabaseNews) -> Unit): PagingData
     }
 
     class MainViewHolder(private var binding: NewsitemBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(news:DatabaseNews){
-            binding.category.text = news.title
+        fun bind(news:DatabaseNews) {
+                binding.category.text = news.title
 
-            binding.newcorp.text = news.source
-            if(news.images.isNullOrEmpty()){
-                if (news.source.startsWith("C")){
-                    binding.imageButton.setImageResource(R.drawable.cnn)
-                }
-                if (news.source.contains("bbc", ignoreCase = true)){
-                    binding.imageButton.setImageResource(R.drawable.bbc)
-                }
-                if (news.source.contains("bloomberg", ignoreCase = true)){
-                    binding.imageButton.setImageResource(R.drawable.bloombergicon)
-                }
-                else{
-                    binding.imageButton.setImageResource(R.drawable.ic_baseline_image_not_supported_24)
+                binding.newcorp.text = "Source : ${news.source}"
+                if (news.images.isNullOrEmpty()) {
+                    if (news.source.startsWith("C")) {
+                        binding.imageButton.setImageResource(R.drawable.cnn)
+                    }
+                    if (news.source.contains("bbc", ignoreCase = true)) {
+                        binding.imageButton.setImageResource(R.drawable.bbc)
+                    }
+                    if (news.source.contains("bloomberg", ignoreCase = true)) {
+                        binding.imageButton.setImageResource(R.drawable.bloombergicon)
+                    } else {
+                        binding.imageButton.setImageResource(R.drawable.ic_baseline_newspaper_24)
 
+                    }
+                } else {
+                    binding.imageButton.load(news.images) {
+                        placeholder(R.drawable.loading_animation)
+                        error(R.drawable.ic_baseline_find_in_page_24)
+                    }
                 }
-            }
-            else{
-                binding.imageButton.load(news.images){
-                    placeholder(R.drawable.loading_animation)
-                    error(R.drawable.ic_baseline_find_in_page_24)
-                }
-            }
+
 
         }
+
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainAdapter.MainViewHolder {
     return MainViewHolder(NewsitemBinding.inflate(LayoutInflater.from(parent.context)))

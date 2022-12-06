@@ -69,6 +69,8 @@ class Headlines : Fragment(){
         //Load the news from the database
         lifecycleScope.launch {
             viewModel.getnewsdatasource("").collect {
+
+
                 adapter.submitData(it)
 
                 /* viewModel.item.collect {
@@ -136,6 +138,7 @@ class Headlines : Fragment(){
                 binding.newsRecyler.layoutManager = LinearLayoutManager(this@Headlines.context)
                 lifecycleScope.launch {
                     viewModel.getnewsdatasource(search = query!!).collect {
+
                         adapter.submitData(it)
                     }
                 }
@@ -152,7 +155,6 @@ class Headlines : Fragment(){
                       //  adapter.submitData(it)
                   //  }
                     adapter.refresh()
-
 
                     keyboard.hideSoftInputFromWindow(view?.windowToken, 0)
                 }
