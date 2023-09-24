@@ -25,7 +25,7 @@ class NewsViewModel(val application: Application): ViewModel() {
     /**
      * A playlist of news displayed on the screen.
      */
-    val newsList = newsRepository.news
+    private val newsList = newsRepository.news
 
 
     val newsNetworkDataRepo = newsRepository.newsList

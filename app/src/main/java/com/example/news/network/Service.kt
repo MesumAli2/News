@@ -38,8 +38,9 @@ private val retrofit  by lazy {
 interface NewsByteService{
     @GET("news")
     suspend fun getNews(
-        @Query("sources") sources: String, @Query("languages") language: String,
-        @Query("keywords") search: String, @Query("sort") sort: String ): NetworkNewsContainer
+        @Query("sources") sources: String, @Query("languages") language: String,@Query("access_key") accessKey : String = "76d0293e69c0f7e4731f2b659d98bb95",
+        @Query("keywords") search: String, @Query("sort") sort: String,@Query("offset") offset: Int, @Query("limit") limit: Int
+    ): NetworkNewsContainer
 }
 
 //Main entry point for network access. Call like `NewsByteNetwork.newByte.getNews()`

@@ -1,18 +1,14 @@
 package com.example.news.repository
 
-import android.telecom.Call
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.lifecycle.switchMap
 import androidx.paging.*
 import com.example.news.database.DatabaseNews
 import com.example.news.database.NewsDatabase
 import com.example.news.database.asDomainModel
 import com.example.news.domain.NewsByte
-import com.example.news.domain.NewsModel
 import com.example.news.network.NetworkNewsContainer
 import com.example.news.network.NewsByteNetwork
 import com.example.news.network.NewsByteNetworkJava
@@ -23,7 +19,6 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
-import javax.security.auth.callback.Callback
 
 
 /**
@@ -126,7 +121,7 @@ class NewsRepository (private val database: NewsDatabase){
     fun getSearchResultStream(search: String): Flow<PagingData<DatabaseNews>> {
         return Pager(
             config = PagingConfig(
-                pageSize = NETWORK_PAGE_SIZE,
+                pageSize = 25,
                 enablePlaceholders = false,
                 maxSize = 1000
             ), pagingSourceFactory ={ MyPagingSource(search)}
@@ -153,51 +148,46 @@ class NewsRepository (private val database: NewsDatabase){
 
 private  val GITHUB_STARTING_PAGE_INDEX = 1
 
-class MyPagingSource (
+    class MyPagingSource(
         val search: String
-        ) : PagingSource<Int, DatabaseNews>() {
+    ) : PagingSource<Int, DatabaseNews>() {
+        private var currentOffset = 0
 
-    private val currentnews = MutableLiveData<List<DatabaseNews>>()
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DatabaseNews> {
-        val position = params.key ?: 1
+        override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DatabaseNews> {
+            val offset = params.key ?: currentOffset
 
-        return try {
+            return try {
+                val result = NewsByteNetwork.newsBytes.getNews(
+                    sources =  "cnn,bbc",
+                    language = "en",
+                    sort =   "published_desc",
+                    offset =   currentOffset,
+                    limit = params.loadSize,
+                    search = search
+                )
 
-            val result = NewsByteNetwork.newsBytes.getNews(
-                "cnn,bbc",
-                "en",
-                search,
-                "published_desc"
-            )
+                currentOffset += params.loadSize // Increment the current offset
 
-
-
-            LoadResult.Page(
-                data = result.asDatabaseModel(),
-                prevKey = if (position == 1) null else position -1,
-                nextKey =   if (result.news.isEmpty()) null else position + 1
-
-            )
-        } catch (e: IOException) {
-            LoadResult.Error(e)
-        } catch (e: HttpException) {
-            LoadResult.Error(e)
+                LoadResult.Page(
+                    data = result.asDatabaseModel(),
+                    prevKey = if (offset == 0) null else offset - params.loadSize,
+                    nextKey = if (result.news.isEmpty()) null else offset + params.loadSize
+                )
+            } catch (e: IOException) {
+                LoadResult.Error(e)
+            } catch (e: HttpException) {
+                LoadResult.Error(e)
+            }
         }
 
+        override fun getRefreshKey(state: PagingState<Int, DatabaseNews>): Int? {
 
-    }
+          return  state.anchorPosition?.let {
+                state.closestPageToPosition(it)?.nextKey?.plus(25)
+                state.closestPageToPosition(it)?.prevKey?.minus(25)
 
+            }
 
+    }}
 
-    override fun getRefreshKey(state: PagingState<Int, DatabaseNews>): Int? {
-        return state .anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
-                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
-
-        }    }
-
-    companion object {
-        const val NETWORK_PAGE_SIZE = 25
-    }
-}
 }

@@ -2,6 +2,7 @@ package com.example.news
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -67,19 +68,11 @@ class Headlines : Fragment(){
         binding.newsRecyler.adapter = adapter
         binding.newsRecyler.layoutManager = LinearLayoutManager(this@Headlines.context)
         //Load the news from the database
-        lifecycleScope.launch {
-            viewModel.getnewsdatasource("").collect {
-
-
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getnewsdatasource(search = "").collect {
+                Log.d("DataCheck ", it.toString())
                 adapter.submitData(it)
-
-                /* viewModel.item.collect {
-                adapter.submitData(it)
-            }*/
-
-
             }
-
         }
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -136,9 +129,9 @@ class Headlines : Fragment(){
                 viewModel.serachNews(query.toString())
                 binding.newsRecyler.adapter = adapter
                 binding.newsRecyler.layoutManager = LinearLayoutManager(this@Headlines.context)
-                lifecycleScope.launch {
+                viewLifecycleOwner.lifecycleScope.launch {
                     viewModel.getnewsdatasource(search = query!!).collect {
-
+Log.d("DataCheck ", it.toString())
                         adapter.submitData(it)
                     }
                 }
